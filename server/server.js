@@ -61,10 +61,21 @@ const startServer = async () => {
     console.log('✅ All models synced with database.');
 
     // Start listening
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`\n🩸 BloodLink server running on http://localhost:${PORT}`);
       console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`   Database:    ${process.env.DB_NAME}@${process.env.DB_HOST}:${process.env.DB_PORT || 3306}\n`);
+    });
+
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(`\n❌ Port ${PORT} is already in use.`);
+        console.error(`   Run this to free it:  npx kill-port ${PORT}`);
+        console.error(`   Or use a different port in .env\n`);
+      } else {
+        console.error('❌ Server error:', err.message);
+      }
+      process.exit(1);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error.message);
