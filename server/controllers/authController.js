@@ -88,7 +88,8 @@ const register = async (req, res) => {
       });
     }
 
-    console.error('Register error:', error);
+    console.error('Register error:', error.name, error.message);
+    console.error('Full error:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
     return res.status(500).json({
       success: false,
       message: 'Internal server error.',
