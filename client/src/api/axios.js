@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: "https://bloodlink-mysql.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "https://bloodlink-mysql.onrender.com/api",
   headers: {
     'Content-Type': 'application/json',
   },

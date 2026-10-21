@@ -26,6 +26,30 @@ const Donor = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    latitude: {
+      type: DataTypes.DECIMAL(10, 8),
+      allowNull: true,
+      validate: {
+        min: -90,
+        max: 90,
+      },
+      get() {
+        const val = this.getDataValue('latitude');
+        return val !== null && val !== undefined ? parseFloat(val) : null;
+      },
+    },
+    longitude: {
+      type: DataTypes.DECIMAL(11, 8),
+      allowNull: true,
+      validate: {
+        min: -180,
+        max: 180,
+      },
+      get() {
+        const val = this.getDataValue('longitude');
+        return val !== null && val !== undefined ? parseFloat(val) : null;
+      },
+    },
     isAvailable: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,

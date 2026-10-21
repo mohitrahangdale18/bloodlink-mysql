@@ -1,8 +1,9 @@
-import { MapPin, Phone, Droplet } from 'lucide-react';
+import { MapPin, Phone, Droplet, Navigation } from 'lucide-react';
 import Badge from './Badge';
 
 export default function DonorCard({ donor }) {
   const user = donor.user || {};
+  const hasDistance = donor.distanceKm !== undefined && donor.distanceKm !== null;
 
   return (
     <div className="donor-card card fade-in">
@@ -15,6 +16,11 @@ export default function DonorCard({ donor }) {
           <div className="donor-meta">
             <MapPin size={14} />
             <span>{donor.city || user.city}</span>
+            {hasDistance && (
+              <span className="donor-distance-inline">
+                • <Navigation size={12} className="distance-icon" /> ~{donor.distanceKm} km
+              </span>
+            )}
           </div>
         </div>
         <Badge variant="primary">
@@ -24,6 +30,16 @@ export default function DonorCard({ donor }) {
       </div>
 
       <div className="donor-card-body">
+        {hasDistance && (
+          <div className="donor-detail">
+            <span className="donor-detail-label">Distance</span>
+            <span className="donor-distance-pill">
+              <Navigation size={12} />
+              ~{donor.distanceKm} km away
+            </span>
+          </div>
+        )}
+
         <div className="donor-detail">
           <span className="donor-detail-label">Status</span>
           <span className="donor-status">
@@ -100,6 +116,31 @@ export default function DonorCard({ donor }) {
           color: var(--text-muted);
           font-size: 13px;
           margin-top: 2px;
+          flex-wrap: wrap;
+        }
+
+        .donor-distance-inline {
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+          color: var(--primary);
+          font-weight: 500;
+        }
+
+        .distance-icon {
+          color: var(--primary);
+        }
+
+        .donor-distance-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 2px 8px;
+          border-radius: 12px;
+          background: var(--primary-lighter);
+          color: var(--primary);
+          font-size: 12px;
+          font-weight: 600;
         }
 
         .donor-card-body {

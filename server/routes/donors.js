@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const {
+  getProfile,
   createProfile,
   updateProfile,
   toggleAvailability,
@@ -10,6 +11,9 @@ const {
 
 // GET /api/donors/search — Search available donors (protected)
 router.get('/search', auth, searchDonors);
+
+// GET /api/donors/profile — Get logged-in user's donor profile (protected)
+router.get('/profile', auth, getProfile);
 
 // POST /api/donors/profile — Create donor profile (protected)
 router.post('/profile', auth, createProfile);

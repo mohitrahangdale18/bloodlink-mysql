@@ -10,12 +10,19 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
     logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
+    dialectOptions: (() => {
+      // Allow disabling SSL for local development with DB_SSL=false or when targeting localhost without DB_SSL specified
+      const useSSL = process.env.DB_SSL !== undefined 
+        ? process.env.DB_SSL === 'true' 
+        : (process.env.DB_HOST && !['localhost', '127.0.0.1'].includes(process.env.DB_HOST));
+
+      return useSSL ? {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      } : {};
+    })(),
     pool: {
       max: 10,
       min: 0,
